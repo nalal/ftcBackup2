@@ -36,6 +36,13 @@ using std::cout;
 
 long dirSize;
 
+void dateCheck()
+{
+	int currentTime = time(NULL);
+	int prunedate =  currentTime - 432000;
+	cout << prunedate << "\n";
+}
+
 void copy(string from, string to)
 {
 	fs::copy(from, to, fs::copy_options::recursive);
@@ -117,7 +124,12 @@ int main(uint8_t argc, char* argv[])
 		{
 			cout << "Not enough space for copy.\n";
 			relayMsg("Insufficient space for backups.");
-			relayMsg((std::to_string(dirSize / GB) + " GB required but only " + std::to_string(tospace) + " GB available.").c_str());
+			relayMsg((
+				std::to_string(dirSize / GB) + 
+				" GB required but only " + 
+				std::to_string(tospace) + 
+				" GB available."
+			).c_str());
 			return 0;
 		}
 		relayMsg("Copying files...");
