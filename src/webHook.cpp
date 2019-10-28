@@ -1,9 +1,14 @@
+// C++ libs
 #include <iostream>
 #include <string>
-#include <curl/curl.h>
 #include <future> 
 #include <thread>
 #include <chrono>
+
+// Other libs
+#include <curl/curl.h>
+
+// Local header
 #include "webHook.h"
 
 using namespace std;
@@ -14,21 +19,25 @@ bool verbose = false;
 
 const char* link;
 
+// Make output for webhook enabled
 void enableLog()
 {
 	noLog = false;
 }
 
+// Make curl output verbose
 void curlVerbose()
 {
 	verbose = true;
 }
 
+// Set webhook URL
 void setLink(const char* linkIn)
 {
 	link = linkIn;
 }
 
+// Send message to webhook
 void relayMsgRunner(const char *s)
 {
 	CURL *curl;
@@ -63,6 +72,7 @@ void relayMsgRunner(const char *s)
 	}
 }
 
+// Check if messages are to be sent
 void relayMsg(const char *s)
 {
 	if(!noLog)

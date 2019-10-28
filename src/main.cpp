@@ -1,16 +1,16 @@
-//C includes
+// C includes
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
 #include <sys/statvfs.h>
 
-//C++ includes
+// C++ includes
 #include <iostream>
 #include <thread>
 #include <chrono>
 #include <experimental/filesystem>
 
-//Local includes
+// Local includes
 #include "webHook.h"
 
 /*
@@ -29,6 +29,8 @@
  *
  =======================================================================
  */
+ 
+ // Global var declarations
 namespace fs = std::experimental::filesystem;
 const unsigned int GB = (1024 * 1024) * 1024;
 using std::string;
@@ -36,18 +38,21 @@ using std::cout;
 
 long dirSize;
 
+// Get date for culling existing backups
 void dateCheck()
 {
 	int currentTime = time(NULL);
 	int prunedate =  currentTime - 432000;
-	cout << prunedate << "\n";
+	cout << "Pruning files from before " << prunedate << " UTC\n";
 }
 
+// Copy files for backup
 void copy(string from, string to)
 {
 	fs::copy(from, to, fs::copy_options::recursive);
 }
 
+// Get drive storage info
 struct statvfs getDriveInfo(const char* dir)
 {
 	struct statvfs stat;
@@ -55,6 +60,7 @@ struct statvfs getDriveInfo(const char* dir)
 	return stat;
 }
 
+// Get total data in DIR
 void getTotal(char* dir)
 {
 	long size = 0;
@@ -68,13 +74,14 @@ void getTotal(char* dir)
 	dirSize = size;
 }
 
+// APPLICATION START
 int main(uint8_t argc, char* argv[])
 {
 	struct statvfs frominfo;
 	struct statvfs toinfo;
 	
 	cout << "=====FTC INTERNAL BACKUP UTILITY=====\n";
-	cout << "Written by Nac.\n";
+	cout << "    Written by Nac.\n";
 	string from = "UNSET";
 	string to = "UNSET";
 	for(int i = 1; i < argc; i++)
